@@ -3,4 +3,4 @@ __pycache__/*
 .vscode/*
 static/video/*
 lib/*
-**/react-*
+.DS_Store
