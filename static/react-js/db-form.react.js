@@ -8,7 +8,8 @@ class OverwatchForm extends React.Component {
       hero: null,
       type: null,
       description: null,
-      tags: null
+      tags: null,
+      ytiFrame: null,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -37,7 +38,8 @@ class OverwatchForm extends React.Component {
         hero: this.state.hero,
         type: this.state.type,
         description: this.state.type,
-        tags: this.state.tags
+        tags: this.state.tags,
+        youtube_iframe: this.state.ytiFrame
       }),
       success: function (result, status, xhr) {
 
@@ -53,6 +55,8 @@ class OverwatchForm extends React.Component {
       <form onSubmit={this.handleSubmit}>
         {/* <label>Hero Name:</label><input name="hero" type="text" onChange={this.handleChange} /><br /> */}
         <label class="form">Video URL:</label><input name="videoUrl" type="text" onChange={this.handleChange} /><br />
+        <label class="form">YouTube iFrame:</label><br />
+        <textarea name="ytiFrame" rows="4" cols="50" onChange={this.handleChange} /><br />
         <label class="form">Video Date:</label><input name="videoDate" type="text" onChange={this.handleChange} /><br />
         <label class="form">Hero Name:</label>
         <select name="hero" value={this.state.hero} onChange={this.handleChange}>
