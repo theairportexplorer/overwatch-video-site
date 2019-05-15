@@ -1,10 +1,17 @@
 from flask import Flask
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
+
 
 @app.route("/")
 def main_page():
     return app.send_static_file("index.html")
+
+
+@app.route("/react-page")
+def react_page():
+    return app.send_static_file("react-index.html")
+
 
 # @app.route("/favicon.ico")
 # def favicon():
