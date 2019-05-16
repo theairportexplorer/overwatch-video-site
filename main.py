@@ -3,12 +3,12 @@ from flask import Flask
 app = Flask(__name__, static_url_path='')
 
 
-@app.route("/")
-def main_page():
+@app.route("/angular-page")
+def angular():
     return app.send_static_file("index.html")
 
 
-@app.route("/react-page")
+@app.route("/")
 def react_page():
     return app.send_static_file("react-index.html")
 

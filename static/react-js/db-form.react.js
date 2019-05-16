@@ -1,3 +1,29 @@
+const OverwatchHeroes = [
+  "Ana", "Ashe",
+  "Baptiste", "Bastion", "Brigitte",
+  "D.Va", "Doomfist",
+  "Genji",
+  "Hanzo",
+  "Junkrat",
+  "Lucio",
+  "McCree", "Mei", "Mercy", "Moira",
+  "Orisa",
+  "Pharah",
+  "Reaper", "Reinhardt", "Roadhog",
+  "Soldier76", "Sombra", "Symmetra",
+  "Torbjorn", "Tracer",
+  "Widowmaker", "Winston", "Wrecking Ball",
+  "Zarya", "Zenyatta"
+];
+
+const ClipTypes = ["Highlight", "PotG"];
+
+function normalizeString (inputString) {
+  return inputString.toLowerCase()
+    .replace('.', '')
+    .replace(' ', '');
+}
+
 class OverwatchForm extends React.Component {
   constructor (props) {
     super(props);
@@ -42,7 +68,8 @@ class OverwatchForm extends React.Component {
         youtube_iframe: this.state.ytiFrame
       }),
       error: function (result) {
-        alert(result);
+        console.log(result);
+        //alert("something");
       }
     });
   }
@@ -57,20 +84,15 @@ class OverwatchForm extends React.Component {
         <textarea name="ytiFrame" rows="4" cols="50" onChange={this.handleChange} /><br />
         <label class="form">Video Date:</label><input name="videoDate" type="text" onChange={this.handleChange} /><br />
         <label class="form">Hero Name:</label>
-        <select name="hero" value={this.state.hero} onChange={this.handleChange}>
+        <select id="overwatch-hero-list" name="hero" value={this.state.hero} onChange={this.handleChange}>
           <option value=""></option>
-          <option value="dva">D.Va</option>
-          <option value="reinhardt">Reinhardt</option>
-          <option value="sombra">Sombra</option>
-          <option value="widowmaker">Widowmaker</option>
-          <option value="zenyatta">Zenyatta</option>
+          { OverwatchHeroes.map(hero => <option value={normalizeString(hero)}>{hero}</option>) }
         </select><br />
         <label class="form">Alternate Title:</label><input name="videoTitle" type="text" onChange={this.handleChange} /><br />
         <label class="form">Clip Type:</label>
         <select name="type" value={this.state.type} onChange={this.handleChange}>
           <option value=""></option>
-          <option value="highlight">Highlight</option>
-          <option value="potg">PotG</option>
+          { ClipTypes.map(clipType => <option value={normalizeString(clipType)}>{clipType}</option>) }
         </select><br />
         <label class="form">Tags:</label><br />
         <textarea name="tags" rows="1" cols="50" onChange={this.handleChange} /><br />
