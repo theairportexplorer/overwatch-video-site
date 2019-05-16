@@ -27,10 +27,10 @@ class OverwatchForm extends React.Component {
     console.log(this.state);
     event.preventDefault();
     $.ajax({
-      url: "http://localhost:5000/",
+      url: "http://localhost:5000/populate-db",
       method: 'post',
       contentType: "application/json; charset=utf-8",
-      dataType: 'json',
+      dataType: 'text',
       data: JSON.stringify({
         video_url: this.state.videoUrl,
         video_date: this.state.videoDate,
@@ -41,11 +41,8 @@ class OverwatchForm extends React.Component {
         tags: this.state.tags,
         youtube_iframe: this.state.ytiFrame
       }),
-      success: function (result, status, xhr) {
-
-      },
-      error: function (xhr, status, result) {
-
+      error: function (result) {
+        alert(result);
       }
     });
   }
@@ -54,7 +51,8 @@ class OverwatchForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         {/* <label>Hero Name:</label><input name="hero" type="text" onChange={this.handleChange} /><br /> */}
-        <label class="form">Video URL:</label><input name="videoUrl" type="text" onChange={this.handleChange} /><br />
+        <label class="form">Video URL:</label><br />
+        <textarea name="videoUrl" rows="1" cols="50" onChange={this.handleChange} /><br />
         <label class="form">YouTube iFrame:</label><br />
         <textarea name="ytiFrame" rows="4" cols="50" onChange={this.handleChange} /><br />
         <label class="form">Video Date:</label><input name="videoDate" type="text" onChange={this.handleChange} /><br />
@@ -74,7 +72,8 @@ class OverwatchForm extends React.Component {
           <option value="highlight">Highlight</option>
           <option value="potg">PotG</option>
         </select><br />
-        <label class="form">Tags:</label><input name="tags" type="text" onChange={this.handleChange} /><br />
+        <label class="form">Tags:</label><br />
+        <textarea name="tags" rows="1" cols="50" onChange={this.handleChange} /><br />
         <label class="form">Description:</label><br />
         <textarea name="description" rows="4" cols="50" onChange={this.handleChange}></textarea><br />
         <input class="form-submit" type="submit" value="Submit" />

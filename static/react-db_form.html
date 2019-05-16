@@ -1,18 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Overwatch DB Form</title>
+  <title>OW DB App</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <style>
     label.form {
+      text-emphasis: 1.2em;
       width: 150px;
-    };
+    }
+    div.help-guide {
+      background: rgba(0, 0, 0, 0.06);
+      margin-top: 10px;
+      margin-right: 10px;
+      margin-left: -10px;
+      padding-top: 5px;
+      border: 2px solid black;
+    }
+    .underlined {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h3 style="padding-top:10px;">Overwatch DB Form App</h3>
-    <div id="overwatchForm" style="padding-top: 10px;"></div>
+    <h3 class="underlined col-12" style="padding-top:10px;">Overwatch Database Form</h3>
+    <div class="row">
+      <div class="col-6">
+        <div id="overwatchForm" style="padding-top: 10px;"></div>
+      </div>
+      <div class="help-guide col-6">
+        <h5 class="underlined">Video URL (Required)</h5>
+        <p>Website (YouTube) URL of video</p>
+        <h5 class="underlined">YouTube iFrame (Required)</h5>
+        <p>Generated embed &lt;iframe /&gt; code from YouTube
+          to insert YouTube video players</p>
+        <h5 class="underlined">Video Date (Required)</h5>
+        <p>Date video was created. Must be in YYYYMMDD format.</p>
+        <h5 class="underlined">Hero Name (Required)</h5>
+        <p>Must select hero name from drop list.</p>
+        <h5 class="underlined">Alternate Title (Optional)</h5>
+        <p>Alternate title for video to display. By default it
+          will be:</p><pre>&lt;hero name&gt;_&lt;video date&gt;</pre>
+        <h5 class="underlined">Clip Type (Optional)</h5>
+        <p>Choose between "highlight" or "potg". By default it
+          will be "highlight"
+        </p>
+        <h5 class="underlined">Tags (Optional)</h5>
+        <p>Tag videos for cross referencing. Every tag must be
+          space separated and start with a "#" sign.
+        </p>
+        <h5 class="underlined">Description (Optional)</h5>
+        <p>Personal commentary, if desired.</p>
+      </div>
+    </div>
+    
   </div>
 
   <!-- JavaScript - ReactJS -->
