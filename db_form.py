@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from tinydb import TinyDB
 import signal
+import datetime
 
 app = Flask(__name__, static_url_path='')
 CORS(app)
@@ -30,5 +30,4 @@ def shutdown (*_):
 
 
 if __name__ == "__main__":
-    DB = TinyDB("video-metadata.json")
     app.run(host="127.0.0.1", debug=True)

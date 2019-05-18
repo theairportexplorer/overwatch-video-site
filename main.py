@@ -4,7 +4,7 @@ app = Flask(__name__, static_url_path='')
 
 
 @app.route("/angular-page")
-def angular():
+def angular_page():
     return app.send_static_file("index.html")
 
 
