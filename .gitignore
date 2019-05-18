@@ -6,3 +6,4 @@ lib/*
 .DS_Store
 *.min.*
 video-metadata.json
+*.pyc

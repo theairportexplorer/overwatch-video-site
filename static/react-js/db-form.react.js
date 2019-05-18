@@ -69,7 +69,7 @@ class OverwatchForm extends React.Component {
       }),
       error: function (result) {
         console.log(result);
-        //alert("something");
+        alert(result.responseText);
       }
     });
   }

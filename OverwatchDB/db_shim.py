@@ -1,6 +1,9 @@
-from abc import ABC
+from abc import (
+    ABC,
+    abstractmethod
+)
 from datetime import date
-from types import Optional
+from typing import Optional
 from .utils import OverwatchHeroes
 
 TODAY = date.today()
@@ -29,7 +32,7 @@ class AbstractDBHandler(ABC):
         pass
 
     @abstractmethod
-    def insert(self) -> bool:
+    def insert(self, entry: dict) -> bool:
         return False
 
     @abstractmethod

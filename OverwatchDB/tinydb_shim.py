@@ -20,4 +20,5 @@ class TinyDBHandler(AbstractDBHandler):
     def close(self):
         self._db.close()
     
-    
+    def insert(self, entry: dict) -> bool:
+        return False

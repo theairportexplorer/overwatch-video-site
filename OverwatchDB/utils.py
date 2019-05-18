@@ -32,5 +32,7 @@ class OverwatchHeroes(Enum):
     Zarya = auto()
     Zenyatta = auto()
 
+    def __str__(self):
+        return f"{self.name.lower()}"
 
 OWHeroesList = [name.lower for name, _ in OverwatchHeroes.__members__.items()]
