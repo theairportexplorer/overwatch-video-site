@@ -82,7 +82,7 @@ class OverwatchForm extends React.Component {
         <textarea name="videoUrl" rows="1" cols="50" onChange={this.handleChange} /><br />
         <label class="form">YouTube iFrame:</label><br />
         <textarea name="ytiFrame" rows="4" cols="50" onChange={this.handleChange} /><br />
-        <label class="form">Video Date:</label><input name="videoDate" type="text" onChange={this.handleChange} /><br />
+        <label class="form">Video Date:</label><input id="datepicker" name="videoDate" type="text" onChange={this.handleChange} /><br />
         <label class="form">Hero Name:</label>
         <select id="overwatch-hero-list" name="hero" value={this.state.hero} onChange={this.handleChange}>
           <option value=""></option>
@@ -108,3 +108,4 @@ ReactDOM.render(
   <OverwatchForm></OverwatchForm>,
   document.getElementById('overwatchForm')
 );
+

@@ -4,32 +4,32 @@
     "properties": {
         "video_url": {"type": "string"},
         "video_date": {"type": "string"},
-        "video_title": {"type": "string"},
+        "video_title": {"type": ["null", "string"]},
         "hero": {"enum": [
-            "Ana", "Ashe",
-            "Baptiste", "Bastion", "Brigitte",
-            "D.Va", "Doomfist",
-            "Genji",
-            "Hanzo",
-            "Junkrat",
-            "Lucio",
-            "McCree", "Mei", "Mercy", "Moira",
-            "Orisa",
-            "Pharah",
-            "Reaper", "Reinhardt", "Roadhog",
-            "Soldier76", "Sombra", "Symmetra",
-            "Torbjorn", "Tracer",
-            "Widowmaker", "Winston", "Wrecking Ball",
-            "Zarya", "Zenyatta"
+            "ana", "ashe",
+            "baptiste", "bastion", "brigitte",
+            "dva", "doomfist",
+            "genji",
+            "hanzo",
+            "junkrat",
+            "lucio",
+            "mccree", "mei", "mercy", "moira",
+            "orisa",
+            "pharah",
+            "reaper", "reinhardt", "roadhog",
+            "soldier76", "sombra", "symmetra",
+            "torbjorn", "tracer",
+            "widowmaker", "winston", "wreckingball",
+            "zarya", "zenyatta"
         ]},
-        "description": {"type": "string"},
-        "tags": {"type": "string"},
-        "youtube_iframe": {"type": "string"}
+        "description": {"type": ["null", "string"]},
+        "tags": {"type": ["null", "string"]},
+        "youtube_iframe": {"type": ["null", "string"]}
     },
     "required": [
-        "videoUrl",
-        "videoDate",
+        "video_url",
+        "video_date",
         "hero",
-        "ytiFrame"
+        "youtube_iframe"
     ]
 }

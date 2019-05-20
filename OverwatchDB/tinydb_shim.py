@@ -1,5 +1,12 @@
 from tinydb import TinyDB
 from .db_shim import AbstractDBHandler
+import logging
+
+logging.basicConfig(
+    format="[%(asctime)s] - %(levelname)s/%(name)s: %(message)s",
+    level=logging.DEBUG
+)
+LOG = logging.getLogger(__name__)
 
 
 class TinyDBHandler(AbstractDBHandler):
@@ -21,4 +28,8 @@ class TinyDBHandler(AbstractDBHandler):
         self._db.close()
     
     def insert(self, entry: dict) -> bool:
-        return False
+        try:
+            self._db.insert(entry)
+        except Exception as e:
+            LOG.warning(str(e))
+        return True

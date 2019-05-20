@@ -3,6 +3,7 @@
 <head>
   <title>OW DB App</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/jquery-ui.min.css">
   <style>
     label.form {
       text-emphasis: 1.2em;
@@ -35,7 +36,7 @@
         <p>Generated embed &lt;iframe /&gt; code from YouTube
           to insert YouTube video players</p>
         <h5 class="underlined">Video Date (Required)</h5>
-        <p>Date video was created. Must be in YYYYMMDD format.</p>
+        <p>Date video was created. Must be in ISO 8601 (YYYY-MM-DD) format.</p>
         <h5 class="underlined">Hero Name (Required)</h5>
         <p>Must select hero name from drop list.</p>
         <h5 class="underlined">Alternate Title (Optional)</h5>
@@ -61,8 +62,18 @@
   <script src="react-lib/babel.min.js"></script>
   <script src="react-lib/react.production.min.js"></script>
   <script src="react-lib/react-dom.production.min.js"></script>
+  <script src="react-lib/jquery-ui.min.js"></script>
 
   <!-- JavaScript - Form App -->
   <script type="text/babel" src="react-js/db-form.react.js"></script>
+  <script>
+    $(function () {
+      $("#datepicker").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd'
+      });
+    });
+  </script>
 </body>
 </html>
