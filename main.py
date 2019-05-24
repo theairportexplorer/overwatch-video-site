@@ -13,9 +13,10 @@ def react_page():
     return app.send_static_file("react-index.html")
 
 
-# @app.route("/favicon.ico")
-# def favicon():
-#     pass
+@app.route("/db-form")
+def db_form_page():
+    return app.send_static_file("react-dbform.html")
+
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", debug=True)

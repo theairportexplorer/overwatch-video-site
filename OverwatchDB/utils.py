@@ -1,5 +1,5 @@
 from enum import Enum, auto
-
+import datetime
 
 class OverwatchHeroes(Enum):
     Ana = auto()
@@ -36,3 +36,6 @@ class OverwatchHeroes(Enum):
         return f"{self.name.lower()}"
 
 OWHeroesList = [name.lower for name, _ in OverwatchHeroes.__members__.items()]
+
+TODAY = datetime.date.today()
+OWRELEASEDATE = datetime.date.fromisoformat("2016-05-24")
