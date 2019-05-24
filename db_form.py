@@ -4,6 +4,14 @@ import json
 import jsonschema
 import signal
 import datetime
+import logging
+from tinydb import TinyDB, Query
+
+logging.basicConfig(
+    format="[%(asctime)s] - %(levelname)s/%(name)s: %(message)s",
+    level=logging.DEBUG
+)
+LOG = logging.getLogger(__name__)
 
 app = Flask(__name__, static_url_path='')
 CORS(app)
@@ -16,6 +24,29 @@ except Exception as e:
     POPULATE_DB_SCHEMA = None
 
 
+def url_check(url: str) -> bool:
+    if DB is not None:
+        return DB.contains(Query().video_url == url)
+    else:
+        raise ValueError("No database found")
+
+
+def validate_date(date_prototype: str) -> str:
+    # Expected prototype ISO 8061 (yyyy-mm-dd)
+    candidate = datetime.date.fromisoformat(date_prototype)
+    if candidate > datetime.date.today():
+        raise ValueError(f"{date_prototype} is after today")
+    if candidate < datetime.date(2016, 5, 24):
+        raise ValueError(f"{date_prototype} is before Overwatch release day")
+    return candidate.isoformat()
+
+
+def parse_tags(tags: str) -> list:
+    # Expected tags to be space separated, and start with "#"
+    prototypes = tags.split()
+    return [tag for tag in prototypes if tag.startswith("#")]
+
+
 @app.route("/", methods=['GET'])
 def main_page():
     return app.send_static_file("react-dbform.html")
@@ -25,12 +56,21 @@ def main_page():
 def populate_db():
     try:
         data = request.get_json()
-        print(data)
-        try:
-            jsonschema.validate(data, POPULATE_DB_SCHEMA)
-        except jsonschema.ValidationError as e:
-            return f"Invalid JSON: {e!s}", 400
+        LOG.debug(data)
+        jsonschema.validate(data, POPULATE_DB_SCHEMA)
+        data["video_date"] = validate_date(data["video_date"])
+        data["tags"] = parse_tags(data["tags"])
+        if url_check(data["video_url"]) is True:
+            raise ValueError(f"{data['video_url']} already tracked")
+        if DB is not None:
+            DB.insert(data)
+        else:
+            raise ValueError("No database found")
         return '', 200
+    except ValueError as e:
+        return f"Error: {e!s}", 400
+    except jsonschema.ValidationError as e:
+        return f"Invalid JSON: {e!s}", 400
     except Exception as e:
         return str(e), 500
 
@@ -41,4 +81,5 @@ def shutdown (*_):
 
 
 if __name__ == "__main__":
+    DB = TinyDB("video-metadata.json")
     app.run(host="127.0.0.1", debug=True)
