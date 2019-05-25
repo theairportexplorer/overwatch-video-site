@@ -2,12 +2,14 @@ from tinydb import TinyDB, Query
 from .db_shim import AbstractDBHandler
 from .utils import (
     TODAY,
-    OWRELEASEDATE
+    OWRELEASEDATE,
+    OverwatchHeroes
 )
 import logging
 import json
 import jsonschema
 import datetime
+from typing import Optional
 
 logging.basicConfig(
     format="[%(asctime)s] - %(levelname)s/%(name)s: %(message)s",
@@ -55,6 +57,8 @@ class TinyDBHandler(AbstractDBHandler):
         return candidate.isoformat()
 
     def _parse_tags(tags: str) -> list:
+        if tags is None:
+            return []
         return [tag for tag in tags.split() if tag.startswith("#")]
     
     def insert(self, data: dict) -> tuple:
@@ -79,3 +83,52 @@ class TinyDBHandler(AbstractDBHandler):
         except Exception as e:
             LOG.warning(str(e))
             return str(e), 500
+
+    def _date_query_builder(
+        self, start_date: datetime.date, *,
+        end_date: Optional[datetime.date]=TODAY
+    ):
+        def date_filter(
+            video_date: str, start_date: datetime.date, end_date: datetime.date
+        ):
+            test_date = datetime.date.fromisoformat(video_date)
+            return start_date <= test_date <= end_date
+        return Query().video_date.test(date_filter, start_date, end_date)
+
+    def fetch_by_dates(
+        self, start_date: datetime.date, *,
+        end_date: Optional[datetime.date]=TODAY
+    ) -> list:
+        return self._db.search(self._date_query_builder(start_date, end_date))
+
+    def _hero_query_builder(self, hero: OverwatchHeroes):
+        return (Query().hero == str(hero))
+
+    def fetch_by_hero_name(self, hero: OverwatchHeroes) -> list:
+        return self._db.search(self._hero_query_builder(hero))
+
+    def _tag_query_builder(self, tag: str):
+        def tag_filter(tags: list, tag: str):
+            return tag in tags
+        return Query().tags.test(tag_filter, tag)
+
+    def fetch_by_tag(self, tag: str) -> list:
+        return self._db.search(self._tag_query_builder(tag))
+
+    def fetch_by_multiple(
+        self, *,
+        start_date: Optional[datetime.date]=None,
+        end_date: Optional[datetime.date]=TODAY,
+        hero_name: Optional[OverwatchHeroes]=None,
+        tag: Optional[str] = None
+    ) -> list:
+        date_query = Query()
+        hero_query = Query()
+        tag_query = Query()
+        if start_date is not None:
+            date_query = self._date_query_builder(start_date, end_date)
+        if hero_name is not None:
+            hero_query = self._hero_query_builder(hero_name)
+        if tag is not None:
+            tag_query = self._tag_query_builder(tag)
+        return self._db.search(date_query & hero_query & tag_query)

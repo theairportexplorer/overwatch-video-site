@@ -32,8 +32,8 @@ class AbstractDBHandler(ABC):
         pass
 
     @abstractmethod
-    def insert(self, entry: dict) -> bool:
-        return False
+    def insert(self, entry: dict) -> tuple:
+        return ()
 
     @abstractmethod
     def fetch_by_dates(
@@ -42,7 +42,7 @@ class AbstractDBHandler(ABC):
         return []
 
     @abstractmethod
-    def fetch_by_hero_name(self, name: OverwatchHeroes) -> list:
+    def fetch_by_hero_name(self, hero: OverwatchHeroes) -> list:
         return []
 
     @abstractmethod

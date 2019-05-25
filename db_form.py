@@ -32,7 +32,7 @@ def url_check(url: str) -> bool:
 
 
 def validate_date(date_prototype: str) -> str:
-    # Expected prototype ISO 8061 (yyyy-mm-dd)
+    # Expected prototype ISO 8601 (yyyy-mm-dd)
     candidate = datetime.date.fromisoformat(date_prototype)
     if candidate > datetime.date.today():
         raise ValueError(f"{date_prototype} is after today")
@@ -42,6 +42,8 @@ def validate_date(date_prototype: str) -> str:
 
 
 def parse_tags(tags: str) -> list:
+    if tags is None:
+        return []
     # Expected tags to be space separated, and start with "#"
     prototypes = tags.split()
     return [tag for tag in prototypes if tag.startswith("#")]
