@@ -60,6 +60,10 @@ def populate_db():
         jsonschema.validate(data, POPULATE_DB_SCHEMA)
         data["video_date"] = validate_date(data["video_date"])
         data["tags"] = parse_tags(data["tags"])
+        if data["video_title"] is None:
+            data["video_title"] = f"{data['video_date'].replace('-','')}_{data['hero']}"
+        if data["type"] is None:
+            data["type"] = "highlight"
         if url_check(data["video_url"]) is True:
             raise ValueError(f"{data['video_url']} already tracked")
         if DB is not None:
