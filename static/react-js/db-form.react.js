@@ -42,6 +42,14 @@ class OverwatchForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount () {
+    $("#datepicker").datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'yy-mm-dd'
+    });
+  }
+
   handleChange (event) {
     // console.log(event.target.name);
     // console.log(event.target.value);
@@ -50,7 +58,7 @@ class OverwatchForm extends React.Component {
   }
 
   handleSubmit (event) {
-    console.log(this.state);
+    // console.log(this.state);
     event.preventDefault();
     $.ajax({
       url: "http://localhost:5000/populate-db",
@@ -59,11 +67,12 @@ class OverwatchForm extends React.Component {
       dataType: 'text',
       data: JSON.stringify({
         video_url: this.state.videoUrl,
-        video_date: this.state.videoDate,
+        // video_date: this.state.videoDate,
+        video_date: $("#datepicker").val(), // need to use jquery because react doesn't handle this well
         video_title: this.state.videoTitle,
         hero: this.state.hero,
         type: this.state.type,
-        description: this.state.type,
+        description: this.state.description,
         tags: this.state.tags,
         youtube_iframe: this.state.ytiFrame
       }),
@@ -108,4 +117,3 @@ ReactDOM.render(
   <OverwatchForm></OverwatchForm>,
   document.getElementById('overwatchForm')
 );
-
