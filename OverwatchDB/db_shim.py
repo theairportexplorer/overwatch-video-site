@@ -50,7 +50,7 @@ class AbstractDBHandler(ABC):
         return []
 
     @abstractmethod
-    def fetch_by_multipe(
+    def fetch_by_multiple(
         self, *,
         start_date: Optional[date]=None,
         end_date: Optional[date]=None,

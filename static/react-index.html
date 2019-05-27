@@ -3,15 +3,21 @@
 <head>
   <title>Overwatch Videos</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="react-css/video-js.min.css">
+  <!-- <link rel="stylesheet" href="react-css/video-js.min.css"> -->
+  <link rel="stylesheet" href="css/jquery-ui.min.css">
   <link rel="stylesheet" href="css/app.css">
+  <style>
+    label.form {
+      width: 150px;
+    }
+  </style>
 </head>
 <body>
   <div class="container-fluid">
     <div class="row">
       <div id="sidebar" class="col-sm-3">
         <h3>Available Videos</h3>
-        <div id="video-list"></div>
+        <div id="video-search-menu"></div>
       </div>
       <div id="main" class="col-sm-9">
         <div class="video-view" id="selected-video"></div>
@@ -19,7 +25,8 @@
     </div>
   </div>
   <!-- Javascript - General -->
-  <!-- <script src="react-lib/jquery-3.4.1.min.js"></script> -->
+  <script src="react-lib/jquery-3.4.1.min.js"></script>
+  <script src="react-lib/jquery-ui.min.js"></script>
   <!-- JavaScript - ReactJS -->
   <script src="react-lib/babel.min.js"></script>
   <script src="react-lib/react.production.min.js"></script>
@@ -27,7 +34,7 @@
   
   <!-- JavaScript - VideoJS -->
   <!-- <script src="https://vjs.zencdn.net/7.5.4/video.js"></script> -->
-  <script src="react-lib/video.min.js"></script>
+  <!-- <script src="react-lib/video.min.js"></script> -->
 
   <!-- JavaScript - App -->
   <script type="text/babel" src="react-js/app.react.js"></script>

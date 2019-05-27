@@ -1,6 +1,26 @@
-const widowmaker20180523 = '<iframe width="560" height="315" src="https://www.youtube.com/embed/Tk_S1nlAvyY" \
-                          frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; \
-                          picture-in-picture" allowfullscreen></iframe>';
+const OverwatchHeroes = [
+  "Ana", "Ashe",
+  "Baptiste", "Bastion", "Brigitte",
+  "D.Va", "Doomfist",
+  "Genji",
+  "Hanzo",
+  "Junkrat",
+  "Lucio",
+  "McCree", "Mei", "Mercy", "Moira",
+  "Orisa",
+  "Pharah",
+  "Reaper", "Reinhardt", "Roadhog",
+  "Soldier76", "Sombra", "Symmetra",
+  "Torbjorn", "Tracer",
+  "Widowmaker", "Winston", "Wrecking Ball",
+  "Zarya", "Zenyatta"
+];
+
+function normalizeString (inputString) {
+  return inputString.toLowerCase()
+    .replace('.', '')
+    .replace(' ' , '');
+}
 
 class YouTubeIFrame extends React.Component {
   iframe () {
@@ -23,13 +43,50 @@ class VideoLinks extends React.Component {
   render() {
     return (
       <ul class="unformatted">
-        <li><a href="#20180523_widowmaker" onClick={() => this.handleClick(widowmaker20180523)}>Widowmaker</a></li>
       </ul>
     );
   }
 }
 
+class VideoSearch extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleSubmit (event) {
+
+  }
+
+  handleChange (event) {
+    this.state[event.target.name] = event.target.value;
+  }
+
+  render () {
+    return (
+      <div>
+        <h4>Video Search</h4>
+        <form onSubmit={this.handleSubmit}>
+          <label class="form">Start Date:</label><input id="datepicker" name="videoStartDate" type="text" onChange={this.handleChange} /><br />
+          <label class="form">End Date:</label><input id="datepicker" name="videoEndDate" type="text" onChange={this.handleChange} /><br />
+          <label class="form">Hero Name:</label>
+          <select name="hero" value={this.state.hero} onChange={this.handleChange}>
+            <option value=""></option>
+            { OverwatchHeroes.map(hero => <option value={normalizeString(hero)}>{hero}</option>) }
+          </select><br />
+          <input class="form-submit btn btn-success" type="submit" value="Submit" />
+        </form>
+        <VideoLinks />
+      </div>
+    );
+  }
+}
+
 ReactDOM.render(
-  <VideoLinks></VideoLinks>,
-  document.getElementById("video-list")
+  <VideoSearch></VideoSearch>,
+  document.getElementById("video-search-menu")
 );

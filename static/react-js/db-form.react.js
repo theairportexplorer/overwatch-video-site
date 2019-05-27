@@ -40,6 +40,7 @@ class OverwatchForm extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount () {
@@ -55,6 +56,24 @@ class OverwatchForm extends React.Component {
     // console.log(event.target.value);
     this.state[event.target.name] = event.target.value;
     // console.log(this.state);
+  }
+
+  handleClick (event) {
+    $("textarea[name='videoUrl']").val("");
+    this.state.videoUrl = null;
+    $("#datepicker").val("");
+    $("input[name='videoTitle']").val("");
+    this.state.videoTitle = null;
+    $("select[name='hero']").val("");
+    this.state.hero = null;
+    $("select[name='type']").val("");
+    this.state.type = null;
+    $("textarea[name='description']").val("");
+    this.state.description = null;
+    $("textarea[name='tags']").val("");
+    this.state.tags = null;
+    $("textarea[name='ytiFrame']").val("");
+    this.state.ytiFrame = null;
   }
 
   handleSubmit (event) {
@@ -85,30 +104,33 @@ class OverwatchForm extends React.Component {
 
   render () {
     return (
-      <form onSubmit={this.handleSubmit}>
-        {/* <label>Hero Name:</label><input name="hero" type="text" onChange={this.handleChange} /><br /> */}
-        <label class="form">Video URL:</label><br />
-        <textarea name="videoUrl" rows="1" cols="50" onChange={this.handleChange} /><br />
-        <label class="form">YouTube iFrame:</label><br />
-        <textarea name="ytiFrame" rows="4" cols="50" onChange={this.handleChange} /><br />
-        <label class="form">Video Date:</label><input id="datepicker" name="videoDate" type="text" onChange={this.handleChange} /><br />
-        <label class="form">Hero Name:</label>
-        <select id="overwatch-hero-list" name="hero" value={this.state.hero} onChange={this.handleChange}>
-          <option value=""></option>
-          { OverwatchHeroes.map(hero => <option value={normalizeString(hero)}>{hero}</option>) }
-        </select><br />
-        <label class="form">Alternate Title:</label><input name="videoTitle" type="text" onChange={this.handleChange} /><br />
-        <label class="form">Clip Type:</label>
-        <select name="type" value={this.state.type} onChange={this.handleChange}>
-          <option value=""></option>
-          { ClipTypes.map(clipType => <option value={normalizeString(clipType)}>{clipType}</option>) }
-        </select><br />
-        <label class="form">Tags:</label><br />
-        <textarea name="tags" rows="1" cols="50" onChange={this.handleChange} /><br />
-        <label class="form">Description:</label><br />
-        <textarea name="description" rows="4" cols="50" onChange={this.handleChange}></textarea><br />
-        <input class="form-submit" type="submit" value="Submit" />
-      </form>
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          {/* <label>Hero Name:</label><input name="hero" type="text" onChange={this.handleChange} /><br /> */}
+          <label class="form">Video URL:</label><br />
+          <textarea name="videoUrl" rows="1" cols="50" onChange={this.handleChange} /><br />
+          <label class="form">YouTube iFrame:</label><br />
+          <textarea name="ytiFrame" rows="4" cols="50" onChange={this.handleChange} /><br />
+          <label class="form">Video Date:</label><input id="datepicker" name="videoDate" type="text" onChange={this.handleChange} /><br />
+          <label class="form">Hero Name:</label>
+          <select id="overwatch-hero-list" name="hero" value={this.state.hero} onChange={this.handleChange}>
+            <option value=""></option>
+            { OverwatchHeroes.map(hero => <option value={normalizeString(hero)}>{hero}</option>) }
+          </select><br />
+          <label class="form">Alternate Title:</label><input name="videoTitle" type="text" onChange={this.handleChange} /><br />
+          <label class="form">Clip Type:</label>
+          <select name="type" value={this.state.type} onChange={this.handleChange}>
+            <option value=""></option>
+            { ClipTypes.map(clipType => <option value={normalizeString(clipType)}>{clipType}</option>) }
+          </select><br />
+          <label class="form">Tags:</label><br />
+          <textarea name="tags" rows="1" cols="50" onChange={this.handleChange} /><br />
+          <label class="form">Description:</label><br />
+          <textarea name="description" rows="4" cols="50" onChange={this.handleChange}></textarea><br />
+          <input class="form-submit col-3 btn btn-success" type="submit" value="Submit" />
+        </form>
+        <button class="col-3 btn btn-danger" onClick={this.handleClick}>Clear</button>
+      </div>
     );
   }
 }
