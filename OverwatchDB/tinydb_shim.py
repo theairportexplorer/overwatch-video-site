@@ -126,7 +126,7 @@ class TinyDBHandler(AbstractDBHandler):
         hero_query = Query()
         tag_query = Query()
         if start_date is not None:
-            date_query = self._date_query_builder(start_date, end_date)
+            date_query = self._date_query_builder(start_date, end_date=end_date)
         if hero_name is not None:
             hero_query = self._hero_query_builder(hero_name)
         if tag is not None:

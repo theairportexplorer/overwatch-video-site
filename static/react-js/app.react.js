@@ -52,14 +52,39 @@ class VideoSearch extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-
+      videoStartDate: null,
+      videoEndDate: null,
+      hero: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleSubmit (event) {
+  componentDidMount () {
+    $('[id^="datepicker"]').datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'yy-mm-dd'
+    });
+  }
 
+  handleSubmit (event) {
+    event.preventDefault();
+    $.ajax({
+      url: "http://localhost:5000/retrieve",
+      method: "get",
+      contentType: "application/json; charset=utf-8",
+      dataType: "text",
+      data: {
+        start_date: $("#datepicker1").val(),
+        end_date: $("#datepicker2").val(),
+        hero: this.state.hero
+      },
+      error: function (result) {
+        console.log(result);
+        alert(result.responseText);
+      }
+    });
   }
 
   handleChange (event) {
@@ -71,8 +96,8 @@ class VideoSearch extends React.Component {
       <div>
         <h4>Video Search</h4>
         <form onSubmit={this.handleSubmit}>
-          <label class="form">Start Date:</label><input id="datepicker" name="videoStartDate" type="text" onChange={this.handleChange} /><br />
-          <label class="form">End Date:</label><input id="datepicker" name="videoEndDate" type="text" onChange={this.handleChange} /><br />
+          <label class="form">Start Date:</label><input id="datepicker1" name="videoStartDate" type="text" onChange={this.handleChange} /><br />
+          <label class="form">End Date:</label><input id="datepicker2" name="videoEndDate" type="text" onChange={this.handleChange} /><br />
           <label class="form">Hero Name:</label>
           <select name="hero" value={this.state.hero} onChange={this.handleChange}>
             <option value=""></option>
