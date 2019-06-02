@@ -22,28 +22,49 @@ function normalizeString (inputString) {
     .replace(' ' , '');
 }
 
-class YouTubeIFrame extends React.Component {
-  iframe () {
-    return {__html: this.props.iframe};
+class YouTubeUrl extends React.Component {
+  youtubeUrl () {
+    return this.props.url;
   }
+
   render () {
-    return <div dangerouslySetInnerHTML={this.iframe()}></div>;
+    // return <div dangerouslySetInnerHTML={this.iframe()}></div>;
+    return (
+      <iframe width="560" height="315" src={this.youtubeUrl()} frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    )
   }
 }
 
 class VideoLinks extends React.Component {
-  handleClick (iFrame) {
+  constructor (props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick (event) {
+    event.preventDefault();
     ReactDOM.unmountComponentAtNode(document.getElementById("selected-video"));
     ReactDOM.render(
-      <YouTubeIFrame iframe={iFrame} />,
+      <YouTubeUrl url={event.target.value} />,
       document.getElementById("selected-video")
     );
   }
 
   render() {
     return (
-      <ul class="unformatted">
-      </ul>
+      <div>
+        <h3 class="search-results">Search Results</h3>
+        <ul class="unformatted">
+          {/* {
+            Object.keys(this.props.videoSearchResult).map(
+              (key, index) => <li><a href="#" value={this.props.videoSearchResult[keys].video_url}>{key}</a></li> 
+            )
+          } */}
+        </ul>
+      </div>
     );
   }
 }
@@ -74,11 +95,21 @@ class VideoSearch extends React.Component {
       url: "http://localhost:5000/retrieve",
       method: "get",
       contentType: "application/json; charset=utf-8",
-      dataType: "text",
+      dataType: "json",
       data: {
         start_date: $("#datepicker1").val(),
         end_date: $("#datepicker2").val(),
         hero: this.state.hero
+      },
+      success: function (result) {
+        console.log(result);
+        var r = {}
+        result["result"].forEach((element) => r[element.video_title] = element);
+        ReactDOM.unmountComponentAtNode(document.getElementById("video-search-result"));
+        ReactDOM.render(
+          <VideoLinks videoSearchResults={r} />,
+          document.getElementById("video-search-result")
+        );
       },
       error: function (result) {
         console.log(result);
@@ -105,7 +136,6 @@ class VideoSearch extends React.Component {
           </select><br />
           <input class="form-submit btn btn-success" type="submit" value="Submit" />
         </form>
-        <VideoLinks />
       </div>
     );
   }

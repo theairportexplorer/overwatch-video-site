@@ -22,3 +22,7 @@ div.video-view {
     padding-top: 20px;
     align-content: center;
 }
+
+h3.search-results {
+    padding-top: 10px;
+}
