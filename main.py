@@ -21,6 +21,7 @@ logging.basicConfig(
     level=logging.DEBUG
 )
 LOG = logging.getLogger(__name__)
+LOG.setLevel(logging.INFO)
 
 app = Flask(__name__, static_url_path='')
 CORS(app)
@@ -100,5 +101,6 @@ if __name__ == "__main__":
     DB.open()
     try:
         app.run(host="127.0.0.1", debug=True)
+        # app.run(host="0.0.0.0", debug=True)
     except KeyboardInterrupt:
         shutdown()
