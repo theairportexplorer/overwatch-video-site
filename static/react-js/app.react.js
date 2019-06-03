@@ -40,11 +40,47 @@ class YouTubeIFrame extends React.Component {
   }
 }
 
+class VideoTag extends React.Component {
+  constructor (props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick (event) {
+    event.preventDefault()
+    // console.log("calling VideoTag.handleClick");
+    $.ajax({
+      url: "http://localhost:5000/retrieve/tag",
+      method: "get",
+      dataType: "json",
+      data: {label: this.props.tag},
+      success: function (result) {
+        var r = {}
+        result["result"].forEach((element) => r[element.video_title] = element);
+        ReactDOM.unmountComponentAtNode(document.getElementById("video-search-result"));
+        ReactDOM.render(
+          <VideoLinks videoSearchResults={r} />,
+          document.getElementById("video-search-result")
+        );
+      },
+      error: function (resp) {
+        console.log(resp);
+        alert(resp.responseText);
+      }
+    });
+  }
+
+  render () {
+    return <a class="tag" href={"#" + this.props.tag} onClick={e => this.handleClick(e)}>{this.props.tag}</a>;
+  }
+}
+
 class VideoTags extends React.Component {
   render () {
+    console.log(this.props.videoTags);
     return (
       <p class="video-description">Tags:
-        { this.props.videoTags.map(tag => <a class="tag-list" href={"#"+tag}>{tag}</a>) }
+        { this.props.videoTags.map(tag => <VideoTag tag={tag} />) }
       </p>
     );
   }
@@ -88,7 +124,7 @@ class VideoLink extends React.Component {
 
   render () {
     return (
-      <li><a href={"#"+this.props.metadata.video_title} onClick={this.handleClick}>{this.props.metadata.video_title}</a></li>
+      <li><a href={"#"+this.props.metadata.video_title} onClick={e => this.handleClick(e)}>{this.props.metadata.video_title}</a></li>
     )
   }
 }
@@ -166,7 +202,7 @@ class VideoSearch extends React.Component {
     return (
       <div>
         <h4>Video Search</h4>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={e => this.handleSubmit(e)}>
           <label class="form">Start Date:</label><input id="datepicker1" name="videoStartDate" type="text" onChange={this.handleChange} /><br />
           <label class="form">End Date:</label><input id="datepicker2" name="videoEndDate" type="text" onChange={this.handleChange} /><br />
           <label class="form">Hero Name:</label>

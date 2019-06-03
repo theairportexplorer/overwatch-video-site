@@ -45,6 +45,7 @@ label.form {
     margin-top: 5px;
 }
 
-a.tag-list {
+a.tag {
     padding-left: 5px;
+    color: rgb(3, 3, 151)
 }

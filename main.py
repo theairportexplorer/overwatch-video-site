@@ -74,6 +74,29 @@ def retrieve_records():
         return jsonify(retobj), 500
 
 
+@app.route("/retrieve/tag")
+def retrieve_records_by_tag():
+    """
+    GET /retrieve/tag?label=TAG
+    """
+    retobj = {}
+    retobj["success"] = False
+    try:
+        tag_label = request.args.get("label")
+        LOG.info(f"tag: {tag_label}")
+        if tag_label == '':
+            retobj["result"] = "Tag label is required"
+            return jsonify(retobj), 400
+        query_results = DB.fetch_by_tag(tag_label)
+        retobj["success"] - True
+        retobj["result"] = query_results
+        return jsonify(retobj), 200
+    except Exception as e:
+        traceback.print_exc()
+        retobj["result"] = str(e)
+        return jsonify(retobj), 500
+
+
 @app.route("/populate-db")
 def populate_db():
     try:
