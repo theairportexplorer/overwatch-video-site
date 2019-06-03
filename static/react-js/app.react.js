@@ -22,15 +22,17 @@ function normalizeString (inputString) {
     .replace(' ' , '');
 }
 
-class YouTubeUrl extends React.Component {
-  youtubeUrl () {
-    return this.props.url;
-  }
-
+class VideoTitle extends React.Component {
   render () {
-    // return <div dangerouslySetInnerHTML={this.iframe()}></div>;
+    return <h1 class="video-title">{this.props.videoTitle.replace("_", " ")}</h1>
+  }
+}
+
+class YouTubeIFrame extends React.Component {
+  render () {
     return (
-      <iframe width="560" height="315" src={this.youtubeUrl()} frameborder="0"
+      // original dimensions 560x315
+      <iframe width="700" height="394" src={this.props.url} frameborder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
       </iframe>
@@ -38,7 +40,23 @@ class YouTubeUrl extends React.Component {
   }
 }
 
-class VideoLinks extends React.Component {
+class VideoTags extends React.Component {
+  render () {
+    return (
+      <p class="video-description">Tags:
+        { this.props.videoTags.map(tag => <a class="tag-list" href={"#"+tag}>{tag}</a>) }
+      </p>
+    );
+  }
+}
+
+class VideoDescription extends React.Component {
+  render () {
+    return <p class="video-description">Commentary: {this.props.videoDescription}</p>
+  }
+}
+
+class VideoLink extends React.Component {
   constructor (props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
@@ -46,11 +64,38 @@ class VideoLinks extends React.Component {
 
   handleClick (event) {
     event.preventDefault();
-    ReactDOM.unmountComponentAtNode(document.getElementById("selected-video"));
+    ReactDOM.unmountComponentAtNode(document.getElementById("selected-video-title"));
     ReactDOM.render(
-      <YouTubeUrl url={event.target.value} />,
-      document.getElementById("selected-video")
+      <VideoTitle videoTitle={this.props.metadata.video_title} />,
+      document.getElementById("selected-video-title")
     );
+    ReactDOM.unmountComponentAtNode(document.getElementById("selected-video-iframe"));
+    ReactDOM.render(
+      <YouTubeIFrame url={this.props.metadata.video_url} />,
+      document.getElementById("selected-video-iframe")
+    );
+    ReactDOM.unmountComponentAtNode(document.getElementById("selected-video-tags"));
+    ReactDOM.render(
+      <VideoTags videoTags={this.props.metadata.tags} />,
+      document.getElementById("selected-video-tags")
+    );
+    ReactDOM.unmountComponentAtNode(document.getElementById("selected-video-description"));
+    ReactDOM.render(
+      <VideoDescription videoDescription={this.props.metadata.description} />,
+      document.getElementById("selected-video-description")
+    );
+  };
+
+  render () {
+    return (
+      <li><a href={"#"+this.props.metadata.video_title} onClick={this.handleClick}>{this.props.metadata.video_title}</a></li>
+    )
+  }
+}
+
+class VideoLinks extends React.Component {
+  constructor (props) {
+    super(props);
   }
 
   render() {
@@ -58,11 +103,7 @@ class VideoLinks extends React.Component {
       <div>
         <h3 class="search-results">Search Results</h3>
         <ul class="unformatted">
-          {/* {
-            Object.keys(this.props.videoSearchResult).map(
-              (key, index) => <li><a href="#" value={this.props.videoSearchResult[keys].video_url}>{key}</a></li> 
-            )
-          } */}
+          { Object.keys(this.props.videoSearchResults).map(key => <VideoLink metadata={this.props.videoSearchResults[key]}/>) }
         </ul>
       </div>
     );
@@ -102,7 +143,6 @@ class VideoSearch extends React.Component {
         hero: this.state.hero
       },
       success: function (result) {
-        console.log(result);
         var r = {}
         result["result"].forEach((element) => r[element.video_title] = element);
         ReactDOM.unmountComponentAtNode(document.getElementById("video-search-result"));
