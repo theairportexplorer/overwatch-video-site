@@ -112,6 +112,16 @@ def db_form_page():
     return app.send_static_file("react-dbform.html")
 
 
+@app.route("/update-db", methods=["post"])
+def update_db():
+    return '', 200
+
+
+@app.route("/db-form/update")
+def db_form_update_page():
+    return '', 200
+
+
 def shutdown(*_):
     if DB is not None:
         DB.close()
