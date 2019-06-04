@@ -97,7 +97,7 @@ def retrieve_records_by_tag():
         return jsonify(retobj), 500
 
 
-@app.route("/populate-db")
+@app.route("/populate-db", methods=["post"])
 def populate_db():
     try:
         data = request.get_json()

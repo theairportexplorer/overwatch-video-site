@@ -56,7 +56,7 @@ class TinyDBHandler(AbstractDBHandler):
             raise ValueError(f"{date_prototype} is before Overwatch release day")
         return candidate.isoformat()
 
-    def _parse_tags(tags: str) -> list:
+    def _parse_tags(self, tags: str) -> list:
         if tags is None:
             return []
         return [tag for tag in tags.split() if tag.startswith("#")]
@@ -67,6 +67,10 @@ class TinyDBHandler(AbstractDBHandler):
             jsonschema.validate(data, self._schema)
             data["video_date"] = self._validate_date(data["video_date"])
             data["tags"] = self._parse_tags(data["tags"])
+            if data["video_title"] is None:
+                data["video_title"] = f"{data['video_date'].replace('-','')}_{data['hero']}"
+            if data["type"] is None:
+                data["type"] = "highlight"
             if self._url_check(data["video_url"]) is True:
                 raise ValueError(f"{data['video_url']} is already tracked")
             if self._db is not None:
