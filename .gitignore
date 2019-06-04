@@ -7,3 +7,4 @@ lib/*
 *.min.*
 video-metadata.json
 *.pyc
+_scratchwork.py

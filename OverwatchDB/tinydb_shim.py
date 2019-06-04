@@ -5,6 +5,7 @@ from .utils import (
     OWRELEASEDATE,
     OverwatchHeroes
 )
+from ._quicksort import qsort
 import logging
 import json
 import jsonschema
@@ -16,6 +17,12 @@ logging.basicConfig(
     level=logging.DEBUG
 )
 LOG = logging.getLogger(__name__)
+
+
+def print_dates(entries: dict):
+    for entry in entries:
+        print(entry["video_date"])
+    print("-"*10)
 
 
 class TinyDBHandler(AbstractDBHandler):
@@ -103,13 +110,17 @@ class TinyDBHandler(AbstractDBHandler):
         self, start_date: datetime.date, *,
         end_date: Optional[datetime.date]=TODAY
     ) -> list:
-        return self._db.search(self._date_query_builder(start_date, end_date))
+        result = self._db.search(self._date_query_builder(start_date, end_date))
+        qsort(result, 0, len(result)-1)
+        return result
 
     def _hero_query_builder(self, hero: OverwatchHeroes):
         return (Query().hero == str(hero))
 
     def fetch_by_hero_name(self, hero: OverwatchHeroes) -> list:
-        return self._db.search(self._hero_query_builder(hero))
+        result = self._db.search(self._hero_query_builder(hero))
+        qsort(result, 0, len(result)-1)
+        return result
 
     def _tag_query_builder(self, tag: str):
         def tag_filter(tags: list, tag: str):
@@ -117,7 +128,9 @@ class TinyDBHandler(AbstractDBHandler):
         return Query().tags.test(tag_filter, tag)
 
     def fetch_by_tag(self, tag: str) -> list:
-        return self._db.search(self._tag_query_builder(tag))
+        result = self._db.search(self._tag_query_builder(tag))
+        qsort(result, 0, len(result)-1)
+        return result
 
     def fetch_by_multiple(
         self, *,
@@ -135,4 +148,8 @@ class TinyDBHandler(AbstractDBHandler):
             hero_query = self._hero_query_builder(hero_name)
         if tag is not None:
             tag_query = self._tag_query_builder(tag)
-        return self._db.search(date_query & hero_query & tag_query)
+        result = self._db.search(date_query & hero_query & tag_query)
+        # print_dates(result)
+        qsort(result, 0, len(result)-1)
+        # print_dates(result)
+        return result
