@@ -32,7 +32,7 @@ class YouTubeIFrame extends React.Component {
   render () {
     return (
       // original dimensions 560x315
-      <iframe width="700" height="394" src={this.props.url+"?start=3"} frameborder="0"
+      <iframe width="560" height="315" src={this.props.url+"?start=3"} frameborder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen>
       </iframe>
