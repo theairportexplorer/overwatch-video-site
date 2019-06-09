@@ -24,7 +24,7 @@ function normalizeString (inputString) {
 
 class VideoTitle extends React.Component {
   render () {
-    return <h1 class="video-title">{this.props.videoTitle.replace("_", " ")}</h1>
+    return <h1 class="video-title">{this.props.videoTitle.replace("_", " ")}</h1>;
   }
 }
 
@@ -32,11 +32,22 @@ class YouTubeIFrame extends React.Component {
   render () {
     return (
       // original dimensions 560x315
-      <iframe width="560" height="315" src={this.props.url+"?start=3"} frameborder="0"
+      <iframe width="700" height="395" src={this.props.url+"?start=3&autoplay=1"} frameborder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen>
       </iframe>
-    )
+    );
+  }
+}
+
+class VimeoIFrame extends React.Component {
+  render () {
+    return (
+      // add #t=3s to start at the 3 second marker
+      <iframe src={this.props.url+"?autoplay=1"} width="700" height="395" frameborder="0"
+        allow="autoplay; fullscreen" allowfullscreen>
+      </iframe>
+    );
   }
 }
 
@@ -105,11 +116,20 @@ class VideoLink extends React.Component {
       <VideoTitle videoTitle={this.props.metadata.video_title} />,
       document.getElementById("selected-video-title")
     );
-    ReactDOM.unmountComponentAtNode(document.getElementById("selected-video-iframe"));
-    ReactDOM.render(
-      <YouTubeIFrame url={this.props.metadata.video_url} />,
-      document.getElementById("selected-video-iframe")
-    );
+    if (this.props.metadata.video_url.includes("youtube")) {
+      ReactDOM.unmountComponentAtNode(document.getElementById("selected-video-iframe"));
+      ReactDOM.render(
+        <YouTubeIFrame url={this.props.metadata.video_url} />,
+        document.getElementById("selected-video-iframe")
+      );
+    }
+    else if (this.props.metadata.video_url.includes("vimeo")) {
+      ReactDOM.unmountComponentAtNode(document.getElementById("selected-video-iframe"));
+      ReactDOM.render(
+        <VimeoIFrame url={this.props.metadata.video_url} />,
+        document.getElementById("selected-video-iframe")
+      );
+    }
     ReactDOM.unmountComponentAtNode(document.getElementById("selected-video-tags"));
     ReactDOM.render(
       <VideoTags videoTags={this.props.metadata.tags} />,
