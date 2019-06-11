@@ -58,3 +58,7 @@ class AbstractDBHandler(ABC):
         tag: Optional[str]=None
     ) -> list:
         return []
+
+    @abstractmethod
+    def update_by_video_url(self, video_url: str, metadata: dict) -> bool:
+        return False

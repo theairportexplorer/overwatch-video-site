@@ -149,3 +149,6 @@ class TinyDBHandler(AbstractDBHandler):
         result = self._db.search(date_query & hero_query & tag_query)
         result.sort(key=self._get_result_sorter_func())
         return result
+
+    def update_by_video_url(self, video_url: str, metadata: dict):
+        return self._db.update(metadata, Query().video_url == video_url)
