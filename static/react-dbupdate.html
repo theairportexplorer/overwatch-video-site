@@ -4,14 +4,42 @@
   <title>OW DB Update</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/jquery-ui.min.css">
+  <style>
+    div #video-search-menu {
+      padding-top: 10px;
+      padding-bottom: 20px;
+      border-bottom: 2px black solid;
+      background: #464646;
+      color: white;
+    }
+    div #video-search-result {
+      padding-top: 10px;
+      padding-left: 30px;
+      height: 100vh;
+      border-right: 2px black solid;
+      background: #7a7a7a;
+      color: white;
+    }
+    div #video-update-form {
+      background: #c9c9c9;
+    }
+    ul.unformatted {
+      padding-left: 0px;
+      list-style: none;
+    }
+    a.tag {
+      padding-left: 5px;
+      color: rgb(3, 3, 151);
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
-      <div id="search-parameters"></div>
-      <div id="video-search-result" class="col-sm-3"></div>
-      <div class="col-sm-9">
-        <div class="video-update-form"></div>
+      <div class="col-12" id="video-search-menu"></div>
+      <div id="video-search-result" class="col-sm-4"></div>
+      <div class="col-sm-8">
+        <div id="video-update-form"></div>
       </div>
     </div>
   </div>
