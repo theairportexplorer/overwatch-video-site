@@ -16,6 +16,8 @@ const OverwatchHeroes = [
   "Zarya", "Zenyatta"
 ];
 
+const ClipTypes = ["Highlight", "PotG"]
+
 function normalizeString (inputString) {
   return inputString.toLowerCase()
     .replace('.', '')
@@ -25,30 +27,111 @@ function normalizeString (inputString) {
 class VideoInfoUpdate extends React.Component {
   constructor (props) {
     super(props);
+    this.state = {
+      videoUrl: props.metadata.video_url,
+      videoDate: props.metadata.video_date,
+      videoTitle: props.metadata.video_title,
+      hero: props.metadata.hero,
+      type: props.metadata.type,
+      description: props.metadata.description,
+      tags: props.metadata.tags,
+      ytiFrame: props.metadata.youtube_iframe,
+    };
+
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount () {
+    $("#datepicker-update").datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'yy-mm-dd'
+    })
+  }
 
+  handleChange (event) {
+    this.state[event.target.name] = event.target.value;
   }
 
   handleSubmit (event) {
     event.preventDefault();
+    console.log(this.state);
+    // $.ajax({
+    //   url: "http://localhost:5000/update-db",
+    //   method: 'post',
+    //   contenttType: "application/json; charset=utf-8",
+    //   dataType: 'text',
+    //   data: JSON.stringify({}),
+    //   success: function () {
+    //     // Clear everything
+    //   },
+    //   error: function (result) {
+    //     console.log(result);
+    //     alert(result.responseText);
+    //   }
+    // });
   }
 
   render () {
     return (
       <div>
-
+        <h4 id="video-url-update-area">Video URL: <a href={this.state.videoUrl} target="_blank">{this.state.videoUrl}</a></h4>
+        <form onSubmit={e => this.handleSubmit(e)}>
+          <div class="input-group mb-3 col-md-8">
+            <div class="input-group-prepend">
+              <label class="input-group-text">Video Title</label>
+            </div>
+            <input class="form-control" id="update-video-title" name="videoTitle" type="text" onChange={this.handleChange} />
+          </div>
+          <div class="input-group mb-3 col-md-8">
+            <div class="input-group-prepend">
+              <label class="input-group-text">iFrame HTML</label>
+            </div>
+            <textarea name="ytiFrame" class="form-control" rows="5" id="iFrameHTML" onChange={this.handleChange} />
+          </div>
+          <div class="input-group mb-3 col-md-8">
+            <div class="input-group-prepend">
+              <label class="input-group-text">Video Date</label>
+            </div>
+            <input class="form-control" id="datepicker-update" name="videoDate" type="text" onChange={this.handleChange} />
+          </div>
+          <div class="input-group mb-3 col-md-8">
+            <div class="input-group-prepend">
+              <label class="input-group-text">Hero Name</label>
+            </div>
+            <select class="custom-select" id="overwatch-hero-list" name="hero" value={this.state.hero} onChange={this.handleChange}>
+              <option selected>Select Hero...</option>
+              { OverwatchHeroes.map(hero => <option value={normalizeString(hero)}>{hero}</option>) }
+            </select>
+          </div>
+          <div class="input-group mb-3 col-md-8">
+            <div class="input-group-prepend">
+              <label class="input-group-text">Clip Type</label>
+            </div>
+            <select class="custom-select" name="type" value={this.state.type} onChange={this.handleChange}>
+              <option selected>Select Clip Type...</option>
+              { ClipTypes.map(clipType => <option value={normalizeString(clipType)}>{clipType}</option>) }
+            </select>
+          </div>
+          <div class="input-group mb-3 col-md-8">
+            <div class="input-group-prepend">
+              <label class="input-group-text">Tags</label>
+            </div>
+            <textarea class="form-control" name="tags" rows="1" id="update-tags" onChange={this.handleChange} />
+          </div>
+          <div class="input-group mb-3 col-md-8">
+            <div class="input-group-prepend">
+              <label class="input-group-text">Description</label>
+            </div>
+            <textarea name="description" class="form-control" rows="4" id="update-description" onChange={this.handleChange} />
+          </div>
+          <input id="submit-update" class="form-submit btn btn-success" type="submit" value="Update" />
+        </form>
       </div>
     );
   }
 }
-
-ReactDOM.render(
-  <VideoInfoUpdate></VideoInfoUpdate>,
-  document.getElementById("video-update-form")
-);
 
 class VideoLink extends React.Component {
   constructor (props) {
@@ -58,6 +141,11 @@ class VideoLink extends React.Component {
 
   handleClick (event) {
     event.preventDefault();
+    ReactDOM.unmountComponentAtNode(document.getElementById("video-update-form"));
+    ReactDOM.render(
+      <VideoInfoUpdate metadata={this.props.metadata} />,
+      document.getElementById("video-update-form")
+    );
   }
 
   render () {

@@ -30,7 +30,7 @@ DB = None
 
 @app.route("/angular-page")
 def angular_page():
-    return app.send_static_file("index.html")
+    return app.send_static_file("ng-index.html")
 
 
 @app.route("/")
@@ -119,7 +119,7 @@ def update_db():
 
 @app.route("/db-form/update")
 def db_form_update_page():
-    return '', 200
+    return app.send_static_file("react-dbupdate.html")
 
 
 def shutdown(*_):
