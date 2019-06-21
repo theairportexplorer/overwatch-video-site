@@ -114,7 +114,12 @@ def db_form_page():
 
 @app.route("/update-db", methods=["post"])
 def update_db():
-    return '', 200
+    try:
+        data = request.get_json()
+        LOG.info(data)
+        return '', 200
+    except Exception as e:
+        return str(e), 500
 
 
 @app.route("/db-form/update")

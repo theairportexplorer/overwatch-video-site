@@ -24,18 +24,29 @@ function normalizeString (inputString) {
     .replace(' ', '');
 }
 
+function normalizeTags (inputTagArray) {
+  return inputTagArray.toString()
+    .replace(',', ' ');
+}
+
+class VideoTitleUrl extends React.Component {
+  render () {
+    return <a  href={this.props.videoUrl} target="_blank">{this.props.videoUrl}</a>
+  }
+}
+
 class VideoInfoUpdate extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      videoUrl: props.metadata.video_url,
-      videoDate: props.metadata.video_date,
-      videoTitle: props.metadata.video_title,
-      hero: props.metadata.hero,
-      type: props.metadata.type,
-      description: props.metadata.description,
-      tags: props.metadata.tags,
-      ytiFrame: props.metadata.youtube_iframe,
+      videoUrl: props.videoUrl,
+      videoDate: props.videoDate,
+      videoTitle: props.videoTitle,
+      hero: props.hero,
+      type: props.type,
+      description: props.description,
+      tags: props.tags,
+      ytiFrame: props.ytiFrame
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -47,7 +58,35 @@ class VideoInfoUpdate extends React.Component {
       changeMonth: true,
       changeYear: true,
       dateFormat: 'yy-mm-dd'
-    })
+    });
+
+    $("#update-video-title").val(this.state.videoTitle);
+    $("#iframe-html").val(this.state.ytiFrame);
+    $("#datepicker-update").val(this.state.videoDate);
+    $("#update-tags").val(this.state.tags);
+    $("#update-description").val(this.state.description);
+  }
+
+  clearState () {
+    ReactDOM.unmountComponentAtNode(document.getElementById("video-title-url-link"))
+    ReactDOM.render(
+      <VideoTitleUrl videoUrl={""} />,
+      document.getElementById("video-title-url-link")
+    )
+    this.state.videoUrl = null;
+    $("#update-video-title").val("");
+    this.state.videoTitle = null;
+    $("#datepicker-update").val("");
+    $("#overwatch-hero-list").val("Select Hero...");
+    this.state.hero = null;
+    $("select[name='type']").val("Select Clip Type...");
+    this.state.type = null;
+    $("#update-description").val("");
+    this.state.description = null;
+    $("#update-tags").val("");
+    this.state.tags = null;
+    $("#iframe-html").val("");
+    this.state.ytiFrame = null;
   }
 
   handleChange (event) {
@@ -57,26 +96,32 @@ class VideoInfoUpdate extends React.Component {
   handleSubmit (event) {
     event.preventDefault();
     console.log(this.state);
-    // $.ajax({
-    //   url: "http://localhost:5000/update-db",
-    //   method: 'post',
-    //   contenttType: "application/json; charset=utf-8",
-    //   dataType: 'text',
-    //   data: JSON.stringify({}),
-    //   success: function () {
-    //     // Clear everything
-    //   },
-    //   error: function (result) {
-    //     console.log(result);
-    //     alert(result.responseText);
-    //   }
-    // });
+    $.ajax({
+      url: "http://localhost:5000/update-db",
+      method: 'post',
+      contentType: "application/json; charset=utf-8",
+      dataType: 'text',
+      data: JSON.stringify({
+        video_url: this.state.videoUrl,
+        video_title: this.state.videoTitle,
+        video_date: $("#datepicker-update").val(),
+        hero: this.state.hero,
+        type: this.state.type,
+        description: this.state.description,
+        ytiFrame: this.state.ytiFrame
+      }),
+      success: this.clearState(),
+      error: function (result) {
+        console.log(result);
+        alert(result.responseText);
+      }
+    });
   }
 
   render () {
     return (
       <div>
-        <h4 id="video-url-update-area">Video URL: <a href={this.state.videoUrl} target="_blank">{this.state.videoUrl}</a></h4>
+        <h4 id="video-url-update-area">Video URL: <span id="video-title-url-link"><VideoTitleUrl videoUrl={this.props.videoUrl} /></span></h4>
         <form onSubmit={e => this.handleSubmit(e)}>
           <div class="input-group mb-3 col-md-8">
             <div class="input-group-prepend">
@@ -88,7 +133,7 @@ class VideoInfoUpdate extends React.Component {
             <div class="input-group-prepend">
               <label class="input-group-text">iFrame HTML</label>
             </div>
-            <textarea name="ytiFrame" class="form-control" rows="5" id="iFrameHTML" onChange={this.handleChange} />
+            <textarea name="ytiFrame" class="form-control" rows="5" id="iframe-html" onChange={this.handleChange} />
           </div>
           <div class="input-group mb-3 col-md-8">
             <div class="input-group-prepend">
@@ -143,7 +188,9 @@ class VideoLink extends React.Component {
     event.preventDefault();
     ReactDOM.unmountComponentAtNode(document.getElementById("video-update-form"));
     ReactDOM.render(
-      <VideoInfoUpdate metadata={this.props.metadata} />,
+      <VideoInfoUpdate videoUrl={this.props.metadata.video_url} videoDate={this.props.metadata.video_date}
+        videoTitle={this.props.metadata.video_title} type={this.props.metadata.type} tags={normalizeTags(this.props.metadata.tags)}
+        description={this.props.metadata.description} ytiFrame={this.props.metadata.youtube_iframe} hero={this.props.metadata.hero} />,
       document.getElementById("video-update-form")
     );
   }
