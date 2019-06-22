@@ -72,7 +72,7 @@ class VideoInfoUpdate extends React.Component {
     ReactDOM.render(
       <VideoTitleUrl videoUrl={""} />,
       document.getElementById("video-title-url-link")
-    )
+    );
     this.state.videoUrl = null;
     $("#update-video-title").val("");
     this.state.videoTitle = null;
@@ -87,6 +87,7 @@ class VideoInfoUpdate extends React.Component {
     this.state.tags = null;
     $("#iframe-html").val("");
     this.state.ytiFrame = null;
+    alert("DB successfully updated!");
   }
 
   handleChange (event) {
@@ -95,7 +96,6 @@ class VideoInfoUpdate extends React.Component {
 
   handleSubmit (event) {
     event.preventDefault();
-    console.log(this.state);
     $.ajax({
       url: "http://localhost:5000/update-db",
       method: 'post',
@@ -112,7 +112,6 @@ class VideoInfoUpdate extends React.Component {
       }),
       success: this.clearState(),
       error: function (result) {
-        console.log(result);
         alert(result.responseText);
       }
     });
@@ -261,7 +260,6 @@ class VideoSearch extends React.Component {
         );
       },
       error: function (result) {
-        console.log(result);
         alert(result.responseText);
       }
     });
@@ -288,7 +286,7 @@ class VideoSearch extends React.Component {
             </div>
             <input class="form-control" id="datepicker2" name="videoEndDate" type="text" onChange={this.handleChange} />
           </div>
-          <div class="input-group col-sm-3">
+          <div class="input-group col-sm-5">
             <div class="input-group-prepend">
               <span class="input-group-text">Hero Name:</span>
             </div>
@@ -297,7 +295,7 @@ class VideoSearch extends React.Component {
               { OverwatchHeroes.map(hero => <option value={normalizeString(hero)}>{hero}</option>) }
             </select>
           </div>
-          <input class="col-sm-3 form-submit btn btn-success" type="submit" value="Search" />
+          <input class="col-sm-1 form-submit btn btn-success" type="submit" value="Search" />
         </form>
       </div>
     );

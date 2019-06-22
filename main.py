@@ -116,7 +116,8 @@ def db_form_page():
 def update_db():
     try:
         data = request.get_json()
-        LOG.info(data)
+        LOG.debug(data)
+        DB.update_by_video_url(data["video_url"], data)
         return '', 200
     except Exception as e:
         return str(e), 500
