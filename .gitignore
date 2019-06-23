@@ -4,7 +4,10 @@ __pycache__/*
 static/video/*
 lib/*
 .DS_Store
-*.min.*
+bootstrap.min.css
+babel.min.js
+jquery-*.min.js
+react*.production.min.js
 video-metadata.json
 *.pyc
 _scratchwork.py
