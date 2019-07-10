@@ -5,3 +5,4 @@ tinydb
 ujson
 jsonschema
 pytest
+coverage
