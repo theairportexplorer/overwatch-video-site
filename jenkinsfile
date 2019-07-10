@@ -1,37 +1,31 @@
 pipeline {
-    // agent { docker { image 'python:3.7.4' } }
-    agent none
+    agent { 
+        docker {
+            image 'python:3.7.4'
+            args '-u 0'
+        } 
+    }
     stages {
-        // stage('Build') {
-        //     agent {
-        //         docker {
-        //             image 'python:3.7.4'
-        //         }
-        //     }
-        //     steps {
-        //         sh 'python --version'
-        //         sh 'python -m pip install -r requirements.txt'
-        //     }
-        // }
-        stage('Test') {
+        stage('Build') {
             agent {
                 docker {
-                    image 'qnib/pytest'
+                    image 'python:3.7.4'
                 }
             }
             steps {
-                sh 'make test'
+                sh 'python --version'
+                sh 'python -m pip install -r requirements.txt'
             }
-            post {
-                always {
-                    junit 'test_reports/results.xml'
-                }
+        }
+        stage('Test') {
+            steps {
+                sh 'make test'
             }
         }
     }
-    // post {
-    //     always {
-    //         junit '**/test_reports/**/*.xml'
-    //     }
-    // }
+    post {
+        always {
+            junit '**/test_reports/**/*.xml'
+        }
+    }
 }
