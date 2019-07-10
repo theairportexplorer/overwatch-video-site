@@ -4,10 +4,11 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'echo "hello, world!"'
                 // sh 'python --version'
                 sh 'pwd'
-                sh 'ls'
+                sh 'ls -la'
+                sh 'whoami'
+                sh 'docker images'
             }
         }
     }
